@@ -60,7 +60,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-1rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-xl border px-6 py-5 shadow-lg duration-200 sm:max-w-lg",
+          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-0 left-0 z-50 grid w-full h-full max-w-none translate-x-0 translate-y-0 gap-0 rounded-none border-0 shadow-lg duration-200 sm:top-[50%] sm:left-[50%] sm:max-w-[calc(100%-2rem)] sm:translate-x-[-50%] sm:translate-y-[-50%] sm:gap-4 sm:rounded-xl sm:border sm:px-6 sm:py-5",
           className
         )}
         style={{ 
@@ -70,7 +70,7 @@ function DialogContent({
       >
         <div 
           data-scroll-area
-          className="max-h-[calc(85vh-4rem)] overflow-y-auto overscroll-contain px-1"
+          className="h-full overflow-y-auto overscroll-contain px-4 py-6 sm:px-1 sm:py-0 sm:max-h-[calc(85vh-4rem)]"
           style={{ 
             WebkitOverflowScrolling: 'touch',
           }}
