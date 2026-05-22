@@ -38,7 +38,7 @@ interface NavItem {
 // Items to the left of the center button
 const LEFT_NAV: NavItem[] = [
   { page: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { page: 'correspondencias', label: 'Corresp.', icon: Mail },
+  { page: 'lembretes', label: 'Lembretes', icon: Bell },
 ];
 
 // Center (prominent) button
@@ -50,6 +50,7 @@ const RIGHT_NAV: NavItem[] = [
 ];
 
 const SECONDARY_NAV: NavItem[] = [
+  { page: 'correspondencias', label: 'Corresp.', icon: Mail },
   { page: 'ocorrencias', label: 'Ocorrências', icon: AlertTriangle },
   { page: 'ronda', label: 'Rondas', icon: Footprints },
   { page: 'checklist-turno', label: 'Plantão', icon: ClipboardCheck },

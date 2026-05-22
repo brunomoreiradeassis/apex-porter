@@ -22,7 +22,8 @@ export type PageType =
   | 'inspecao-diaria'
   | 'protocolos-emergencia'
   | 'configuracoes'
-  | 'perfil';
+  | 'perfil'
+  | 'lembretes';
 
 export type CategoriaFluxo =
   | 'entregas1'
@@ -624,3 +625,22 @@ export const OPCOES_DEPARTAMENTOS = [
   'Comercial',
   'Compras',
 ];
+
+// ── Lembretes ──
+export type TipoRecorrencia = 'unica' | 'diaria' | 'semanal' | 'mensal' | 'anual';
+
+export interface Lembrete {
+  id: string;
+  usuarioEmail: string;
+  titulo: string;
+  descricao: string;
+  data: string; // YYYY-MM-DD
+  hora: string; // HH:mm
+  recorrente: boolean;
+  tipoRecorrencia: TipoRecorrencia;
+  minutosAntes: number; // 0 para não lembrar antes
+  notificadoAntes: boolean; // se já notificou x minutos antes
+  notificadoNoHorario: boolean; // se já notificou no horário exato
+  dataCriacao: string; // ISO date string
+  ativo: boolean;
+}

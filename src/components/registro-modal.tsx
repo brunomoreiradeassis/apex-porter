@@ -193,15 +193,16 @@ export default function RegistroModal({
         const { id: _i, inativo: _in, versaoAnteriorId: _v, dataInativacao: _di, motivoRefacao: _m, ...rest } = registroInicial as any;
         setFormData({ ...rest });
       } else {
-        setCategoria('');
-        setFormData({
+        setCategoria(categoriaInicial || '');
+        setFormData((prev) => ({
           data: format(new Date(), 'dd/MM/yyyy'),
           horarioEntrada: format(new Date(), 'HH:mm'),
           porteiro: user?.nome || '',
-        });
+          ...prev,
+        }));
       }
     }
-  }, [open, registroInicial, isRefacao, isRascunho, user]);
+  }, [open, registroInicial, isRefacao, isRascunho, user, categoriaInicial]);
 
   // ── Unified suggestion builders ──
   // All suggestions store data using UnifiedSuggestionData keys
@@ -453,13 +454,6 @@ export default function RegistroModal({
 
   const handleCategoriaChange = (v: string) => {
     setCategoria(v as CategoriaFluxo);
-    // Preserva os dados do formulário
-    setFormData((prev) => ({
-      ...prev,
-      data: prev.data || format(new Date(), 'dd/MM/yyyy'),
-      horarioEntrada: prev.horarioEntrada || format(new Date(), 'HH:mm'),
-      porteiro: prev.porteiro || user?.nome || '',
-    }));
   };
 
   const updateField = (field: string, value: string) => {

@@ -26,6 +26,7 @@ import ProtocolosEmergenciaPage from '@/components/protocolos-emergencia-page';
 import DepartamentosPage from '@/components/departamentos-page';
 import EmpresasPage from '@/components/empresas-page';
 import PerfilPage from '@/components/perfil-page';
+import LembretesPage from '@/components/lembretes-page';
 import AppHeader from '@/components/app-header';
 import BottomNav from '@/components/bottom-nav';
 
@@ -53,6 +54,7 @@ function PageRenderer() {
     'checklist-turno': <ChecklistTurnoPage />,
     'inspecao-diaria': <InspecaoDiariaPage />,
     'protocolos-emergencia': <ProtocolosEmergenciaPage />,
+    lembretes: <LembretesPage />,
   };
 
   return (

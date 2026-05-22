@@ -17,6 +17,7 @@ import {
   deleteDocument,
   getDocument,
   type Unsubscribe,
+  where,
 } from './firestore';
 import type {
   Empresa,
@@ -35,6 +36,7 @@ import type {
   InspecaoDiaria,
   ProtocoloEmergencia,
   AtivacaoProtocolo,
+  Lembrete,
 } from './data';
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -468,4 +470,37 @@ export async function getConfig(key: string): Promise<ConfigItens | null> {
 
 export async function setConfig(key: string, data: ConfigItens): Promise<void> {
   await setDocument(CONFIG_COL, key, data as Record<string, unknown>);
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// LEMBRETES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+const LEMBRETES_COL = 'lembretes';
+
+export function subscribeLembretes(
+  usuarioEmail: string,
+  callback: (data: Lembrete[]) => void
+): Unsubscribe {
+  return subscribeCollection<Lembrete>(
+    LEMBRETES_COL,
+    callback,
+    where('usuarioEmail', '==', usuarioEmail)
+  );
+}
+
+export async function addLembrete(data: Omit<Lembrete, 'id'>): Promise<string> {
+  return addDocument(LEMBRETES_COL, data as Record<string, unknown>);
+}
+
+export async function setLembrete(id: string, data: Omit<Lembrete, 'id'>): Promise<void> {
+  await setDocument(LEMBRETES_COL, id, data as Record<string, unknown>);
+}
+
+export async function updateLembrete(id: string, data: Partial<Lembrete>): Promise<void> {
+  await updateDocument(LEMBRETES_COL, id, data);
+}
+
+export async function removeLembrete(id: string): Promise<void> {
+  await deleteDocument(LEMBRETES_COL, id);
 }

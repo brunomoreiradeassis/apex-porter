@@ -22,6 +22,7 @@ import type {
   InspecaoDiaria,
   ProtocoloEmergencia,
   AtivacaoProtocolo,
+  Lembrete,
 } from './data';
 import {
   signInWithEmail,
@@ -111,6 +112,11 @@ import {
   setAtivacao as setAtivacaoFS,
   getConfig,
   setConfig,
+  subscribeLembretes,
+  addLembrete as addLembreteFS,
+  setLembrete as setLembreteFS,
+  updateLembrete as updateLembreteFS,
+  removeLembrete as removeLembreteFS,
 } from './firestore-collections';
 import type { Unsubscribe } from './firestore';
 
@@ -298,6 +304,16 @@ function startSubscriptions() {
     })
   );
 
+  // Subscribe to lembretes (only if we have a user with email)
+  const state = useAppStore.getState();
+  if (state.user?.email) {
+    unsubs.push(
+      subscribeLembretes(state.user.email, (data) => {
+        useAppStore.setState({ lembretes: data });
+      })
+    );
+  }
+
   // Phase 7 — Load system config from Firestore (one-time fetch, not real-time)
   loadSystemConfig().catch((err) => {
     console.warn('[Firestore] Falha ao carregar configurações do sistema:', err);
@@ -437,6 +453,12 @@ interface AppState {
   // Settings
   settings: AppSettings;
   updateSettings: (settings: Partial<AppSettings>) => void;
+
+  // Lembretes
+  lembretes: Lembrete[];
+  addLembrete: (lembrete: Lembrete) => void;
+  updateLembrete: (lembrete: Lembrete) => void;
+  removeLembrete: (id: string) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
@@ -1151,5 +1173,30 @@ export const useAppStore = create<AppState>((set, get) => ({
         console.warn('[Firestore] Falha ao salvar configurações do usuário:', err);
       });
     }
+  },
+
+  // Lembretes
+  lembretes: [],
+  addLembrete: (lembrete) => {
+    set((state) => ({ lembretes: [...state.lembretes, lembrete] }));
+    const { id, ...data } = lembrete;
+    setLembreteFS(id, data).catch((err) => {
+      console.warn('[Firestore] Falha ao adicionar lembrete:', err);
+    });
+  },
+  updateLembrete: (lembrete) => {
+    set((state) => ({
+      lembretes: state.lembretes.map((l) => (l.id === lembrete.id ? lembrete : l)),
+    }));
+    const { id, ...data } = lembrete;
+    updateLembreteFS(id, data).catch((err) => {
+      console.warn('[Firestore] Falha ao atualizar lembrete:', err);
+    });
+  },
+  removeLembrete: (id) => {
+    set((state) => ({ lembretes: state.lembretes.filter((l) => l.id !== id) }));
+    removeLembreteFS(id).catch((err) => {
+      console.warn('[Firestore] Falha ao remover lembrete:', err);
+    });
   },
 }));
