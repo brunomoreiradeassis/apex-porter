@@ -272,6 +272,7 @@ export interface User {
   id: string;
   nome: string;
   email: string;
+  cpf?: string;
   cargo?: string;
   dataCadastro?: string;
 }

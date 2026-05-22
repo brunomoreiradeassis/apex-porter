@@ -332,7 +332,7 @@ interface AppState {
   authError: string | null;
   authInitialized: boolean;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (nome: string, email: string, password: string, cargo?: string) => Promise<boolean>;
+  register: (nome: string, email: string, password: string, cargo?: string, cpf?: string) => Promise<boolean>;
   updateUser: (data: Partial<User>) => void;
   logout: () => void;
   resetAuthError: () => void;
@@ -516,14 +516,15 @@ export const useAppStore = create<AppState>((set, get) => ({
     }
   },
 
-  register: async (nome: string, email: string, password: string, cargo?: string) => {
+  register: async (nome: string, email: string, password: string, cargo?: string, cpf?: string) => {
     set({ authLoading: true, authError: null });
     try {
-      const firebaseUser = await signUpWithEmail(nome, email, password, cargo);
+      const firebaseUser = await signUpWithEmail(nome, email, password, cargo, cpf);
       const user: User = {
         id: firebaseUser.uid,
         nome,
         email: firebaseUser.email || email,
+        ...(cpf ? { cpf } : {}),
         cargo: cargo || 'Porteiro',
         dataCadastro: firebaseUser.metadata.creationTime || new Date().toISOString(),
       };

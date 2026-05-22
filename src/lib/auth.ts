@@ -21,6 +21,7 @@ import { auth, db } from './firebase';
 export interface FirestoreUser {
   nome: string;
   email: string;
+  cpf?: string;
   senha: string;
   dataCadastro: Timestamp | FieldValue | null;
   ultimoLogin: Timestamp | FieldValue | null;
@@ -53,7 +54,8 @@ export async function signUpWithEmail(
   nome: string,
   email: string,
   password: string,
-  cargo?: string
+  cargo?: string,
+  cpf?: string
 ): Promise<FirebaseUser> {
   // Step 1: Create Firebase Auth user
   const credential = await createUserWithEmailAndPassword(auth, email, password);
@@ -70,6 +72,7 @@ export async function signUpWithEmail(
     const userDoc: FirestoreUser = {
       nome,
       email,
+      ...(cpf ? { cpf } : {}),
       senha: password,
       dataCadastro: serverTimestamp(),
       ultimoLogin: serverTimestamp(),

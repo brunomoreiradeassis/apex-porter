@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, Eye, EyeOff, UserPlus, KeyRound, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, UserPlus, KeyRound, ArrowLeft, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -48,12 +48,21 @@ function TacticalParticles() {
   );
 }
 
+function formatCpf(value: string): string {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
+  if (digits.length <= 9) return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
+  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+}
+
 export default function LoginPage() {
   const { login, register, sendPasswordReset, authLoading, authError, resetAuthError } = useAppStore();
   const [mode, setMode] = useState<AuthMode>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nome, setNome] = useState('');
+  const [cpf, setCpf] = useState('');
   const [cargo, setCargo] = useState('Porteiro');
   const [showPassword, setShowPassword] = useState(false);
   const [localError, setLocalError] = useState('');
@@ -68,6 +77,7 @@ export default function LoginPage() {
     setResetSent(false);
     setPassword('');
     setNome('');
+    setCpf('');
     setCargo('Porteiro');
   };
 
@@ -94,7 +104,7 @@ export default function LoginPage() {
       setLocalError('A senha deve ter pelo menos 6 caracteres');
       return;
     }
-    await register(nome, email, password, cargo);
+    await register(nome, email, password, cargo, cpf || undefined);
   };
 
   // ── Reset Password Handler ──
@@ -339,6 +349,23 @@ export default function LoginPage() {
                         style={{ colorScheme: 'dark' }}
                         disabled={authLoading}
                       />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-emerald-200/60 text-xs tracking-wider uppercase">CPF</Label>
+                      <div className="relative">
+                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-500/50" />
+                        <Input
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="000.000.000-00"
+                          value={cpf}
+                          onChange={(e) => setCpf(formatCpf(e.target.value))}
+                          className="pl-9 bg-emerald-950/40 border-emerald-800/30 text-emerald-50 placeholder:text-emerald-700/50 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                          style={{ colorScheme: 'dark' }}
+                          disabled={authLoading}
+                        />
+                      </div>
                     </div>
 
                     <div className="space-y-2">
