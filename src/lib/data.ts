@@ -100,6 +100,7 @@ export interface RegistroPesagem extends BaseRegistroFluxo {
   empresa: string;
   placa: string;
   motorista: string;
+  rgCpf: string;
   horarioEntrada: string;
   pesoEntrada: number;
   horarioSaida: string;

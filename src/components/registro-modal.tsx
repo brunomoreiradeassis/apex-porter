@@ -66,6 +66,7 @@ function mapToFormFields(categoria: CategoriaFluxo | '', data: UnifiedSuggestion
       break;
     case 'pesagem':
       if (data.name) mapped.motorista = data.name;
+      if (data.doc) mapped.rgCpf = data.doc;
       if (data.company) mapped.empresa = data.company;
       if (data.plate) mapped.placa = data.plate;
       break;
@@ -117,6 +118,7 @@ function extractUnifiedFromRecord(r: RegistroFluxo): UnifiedSuggestionData {
       data.company = r.empresa;
       data.plate = r.placa;
       data.name = r.motorista;
+      data.doc = (r as any).rgCpf || '';
       break;
     case 'entregas2':
       data.name = r.motorista;
@@ -664,6 +666,7 @@ export default function RegistroModal({
           empresa: formData.empresa,
           placa: formData.placa || '',
           motorista: formData.motorista,
+          rgCpf: formData.rgCpf || '',
           horarioEntrada: formData.horarioEntrada || format(new Date(), 'HH:mm'),
           pesoEntrada: Number(formData.pesoEntrada) || 0,
           horarioSaida: '',
@@ -1003,6 +1006,26 @@ export default function RegistroModal({
         return (
           <>
             <div className="space-y-2">
+              <Label>Nome do Motorista *</Label>
+              <AutocompleteInput
+                value={formData.motorista || ''}
+                onChange={(v) => updateField('motorista', v)}
+                onSelect={(s) => handleAutoSelect(s.data || {})}
+                suggestions={nameSuggestions}
+                placeholder="Nome do motorista"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>RG/CPF</Label>
+              <AutocompleteInput
+                value={formData.rgCpf || ''}
+                onChange={(v) => updateField('rgCpf', formatCpfRg(v))}
+                onSelect={(s) => handleAutoSelect(s.data || {})}
+                suggestions={rgCpfSuggestions}
+                placeholder="00.000.000-0"
+              />
+            </div>
+            <div className="space-y-2">
               <Label>Empresa *</Label>
               <AutocompleteInput
                 value={formData.empresa || ''}
@@ -1020,16 +1043,6 @@ export default function RegistroModal({
                 onSelect={(s) => handleAutoSelect(s.data || {})}
                 suggestions={placaSuggestions}
                 placeholder="ABC-1D23"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Nome do Motorista *</Label>
-              <AutocompleteInput
-                value={formData.motorista || ''}
-                onChange={(v) => updateField('motorista', v)}
-                onSelect={(s) => handleAutoSelect(s.data || {})}
-                suggestions={nameSuggestions}
-                placeholder="Nome do motorista"
               />
             </div>
             <div className="space-y-2">

@@ -85,6 +85,7 @@ function getSecondaryFields(r: RegistroFluxo): { label: string; value: string }[
       ];
     case 'pesagem':
       return [
+        { label: 'RG/CPF', value: (r as any).rgCpf || '-' },
         { label: 'Empresa', value: r.empresa },
         { label: 'Placa', value: r.placa },
         { label: 'Peso Entrada', value: `${r.pesoEntrada.toLocaleString('pt-BR')} kg` },
@@ -141,9 +142,10 @@ function getAllFields(r: RegistroFluxo): { label: string; value: string }[] {
       base.push(formatRgCpfField(r.rgCpf));
       break;
     case 'pesagem':
+      base.push({ label: 'Nome do Motorista', value: r.motorista });
+      base.push(formatRgCpfField((r as any).rgCpf));
       base.push({ label: 'Empresa', value: r.empresa });
       base.push({ label: 'Placa', value: r.placa });
-      base.push({ label: 'Nome do Motorista', value: r.motorista });
       base.push({ label: 'Peso Entrada', value: `${r.pesoEntrada.toLocaleString('pt-BR')} kg` });
       if (r.pesoSaida) base.push({ label: 'Peso Saída', value: `${r.pesoSaida.toLocaleString('pt-BR')} kg` });
       break;
