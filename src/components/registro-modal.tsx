@@ -1365,7 +1365,7 @@ export default function RegistroModal({
     <>
     <Dialog open={open && !coletaMessage} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto custom-scrollbar">
-        <DialogHeader className="pb-2">
+        <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             {isRascunho ? (
               <AlertTriangle className="h-5 w-5 text-red-500" />
