@@ -70,7 +70,7 @@ export async function signUpWithEmail(
   // Step 3: Create user document in Firestore (collection "usuarios")
   try {
     const userDoc: FirestoreUser = {
-      nome,
+      nome: nome.toUpperCase(),
       email,
       ...(cpf ? { cpf } : {}),
       senha: password,
@@ -137,7 +137,7 @@ export async function ensureUserProfile(
     } else {
       // Create full document
       const userDoc: FirestoreUser = {
-        nome: data.nome,
+        nome: data.nome.toUpperCase(),
         email: data.email,
         senha: data.senha,
         dataCadastro: serverTimestamp(),
@@ -156,11 +156,16 @@ export async function updateUserProfile(
   data: Partial<Pick<FirestoreUser, 'nome'>> & Record<string, any>
 ): Promise<void> {
   try {
-    await setDoc(doc(db, USUARIOS_COL, uid), data, { merge: true });
+    const updateData = { ...data };
+    // Convert nome to uppercase if present
+    if (updateData.nome) {
+      updateData.nome = updateData.nome.toUpperCase();
+    }
+    await setDoc(doc(db, USUARIOS_COL, uid), updateData, { merge: true });
 
     // Also update Auth display name if nome changed
-    if (data.nome && auth.currentUser) {
-      await updateProfile(auth.currentUser, { displayName: data.nome });
+    if (updateData.nome && auth.currentUser) {
+      await updateProfile(auth.currentUser, { displayName: updateData.nome });
     }
   } catch (err) {
     console.warn('[Firebase] Falha ao atualizar perfil:', err);
