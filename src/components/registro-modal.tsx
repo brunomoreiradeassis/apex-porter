@@ -1365,7 +1365,7 @@ export default function RegistroModal({
     <>
     <Dialog open={open && !coletaMessage} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto custom-scrollbar">
-        <DialogHeader>
+        <DialogHeader className="pb-2">
           <DialogTitle className="flex items-center gap-2">
             {isRascunho ? (
               <AlertTriangle className="h-5 w-5 text-red-500" />
@@ -1376,7 +1376,7 @@ export default function RegistroModal({
           </DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {isRefacao && (
             <div className="bg-amber-500/10 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-xs rounded-xl p-3.5 flex items-start gap-2.5">
               <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5" />

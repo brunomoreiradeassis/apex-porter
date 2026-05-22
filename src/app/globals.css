@@ -331,24 +331,20 @@ img, a, button, [role="button"] {
   overscroll-behavior: contain;
 }
 
-/* Custom scrollbar styling */
+/* Ocultar barras de scroll em todo o sistema */
+*::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom scrollbar styling (mantido caso precise reativar) */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  display: none;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: oklch(0.7 0.02 155);
-  border-radius: 3px;
-}
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.6 0.03 155);
-}
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: oklch(0.4 0.02 155);
-}
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.5 0.03 155);
+.custom-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
