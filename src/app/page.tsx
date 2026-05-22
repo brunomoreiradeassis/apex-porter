@@ -291,7 +291,7 @@ export default function Home() {
           </motion.div>
           <h1 className="text-3xl font-bold text-white tracking-widest">APEX PORTER</h1>
           <p className="text-emerald-300/60 mt-1 text-xs tracking-[0.25em] uppercase">
-            Sistema de Registro
+            Sistema de Controle de Acesso
           </p>
         </motion.div>
 
