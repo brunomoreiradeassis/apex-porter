@@ -73,6 +73,8 @@ function DialogContent({
           className="flex-1 w-full h-full overflow-y-auto overscroll-contain px-4 py-6 sm:px-1 sm:py-0 sm:max-h-[calc(85vh-4rem)] sm:h-auto"
           style={{ 
             WebkitOverflowScrolling: 'touch',
+            touchAction: 'pan-y',
+            overscrollBehavior: 'contain',
           }}
         >
           {children}

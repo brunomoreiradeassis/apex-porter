@@ -187,6 +187,7 @@ html, body {
   overflow-x: hidden;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* Scrollable list containers inside pages */
@@ -196,6 +197,17 @@ html, body {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
   touch-action: pan-y;
+}
+
+/* Ensure nested scrollable containers work properly */
+/* This allows scroll in both directions inside modals and tabs */
+[data-scroll-area],
+[data-radix-scroll-area-viewport],
+[data-slot="dialog-content"],
+[data-slot="sheet-content"],
+[data-slot="tabs-content"] {
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Disable text selection on all UI elements for app-like experience */
@@ -223,7 +235,7 @@ img, a, button, [role="button"] {
   -webkit-touch-callout: none;
 }
 
-/* ── Login page tactical animations ── */
+/* ��─ Login page tactical animations ── */
 @keyframes scanline {
   0% { transform: translateY(-100%); }
   100% { transform: translateY(100vh); }
@@ -276,7 +288,7 @@ img, a, button, [role="button"] {
 
 /* Fix for radix dialog and scrollable elements getting stuck on mobile/touch */
 [data-slot="dialog-overlay"] {
-  /* Prevent touch events on overlay from interfering with dialog scroll */
+  /* Allow touch events to pass through to dialog content */
   touch-action: none;
   pointer-events: auto;
 }
@@ -284,19 +296,24 @@ img, a, button, [role="button"] {
 [data-slot="dialog-content"] {
   /* Prevent scroll chaining to the background page */
   overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
-/* Dialog scroll area */
-[data-slot="dialog-content"] [data-scroll-area] {
+/* Dialog scroll area - critical for bidirectional scroll */
+[data-slot="dialog-content"] [data-scroll-area],
+[data-slot="dialog-content"] > div:first-child {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
   overscroll-behavior: contain;
+  /* Ensure scroll works in both directions */
+  overflow-y: auto !important;
 }
 
 .custom-scrollbar {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
+  overflow-y: auto;
 }
 
 /* Fix for Radix Select dropdowns on mobile */
@@ -321,14 +338,22 @@ img, a, button, [role="button"] {
   overscroll-behavior: contain;
 }
 
-/* Sheet content scroll */
+/* Sheet content scroll - critical for bidirectional scroll */
 [data-slot="sheet-content"] {
   overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+[data-slot="sheet-content"] > div:first-child {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
 }
 
 /* Drawer content scroll */
 [data-slot="drawer-content"] {
   overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 /* Ocultar barras de scroll em todo o sistema */

@@ -22,6 +22,7 @@ function ScrollArea({
         style={{ 
           WebkitOverflowScrolling: 'touch',
           touchAction: 'pan-y',
+          overscrollBehavior: 'contain',
         }}
       >
         {children}

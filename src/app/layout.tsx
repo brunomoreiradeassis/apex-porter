@@ -83,43 +83,79 @@ export default function RootLayout({
             __html: `
               // ── Pull-to-refresh blocker for PWA ──
               // Prevents the browser from refreshing when user pulls down
+              // BUT allows scroll inside modals and nested scrollable elements
               (function() {
                 var scrollRoot = null;
                 var touchStartY = 0;
+                var touchStartTarget = null;
 
                 function getScrollRoot() {
                   if (!scrollRoot) scrollRoot = document.getElementById('app-scroll-root');
                   return scrollRoot;
                 }
 
+                // Check if the element or any of its parents is a scrollable container
+                // that should handle its own scroll events
+                function isInsideScrollableElement(element) {
+                  var current = element;
+                  while (current && current !== document.body) {
+                    // Check for dialog, sheet, drawer, or scroll area containers
+                    if (current.hasAttribute('data-slot')) {
+                      var slot = current.getAttribute('data-slot');
+                      if (slot === 'dialog-content' || 
+                          slot === 'sheet-content' || 
+                          slot === 'drawer-content' ||
+                          slot === 'scroll-area-viewport' ||
+                          slot === 'tabs-content') {
+                        return true;
+                      }
+                    }
+                    // Check for data-scroll-area attribute
+                    if (current.hasAttribute('data-scroll-area')) {
+                      return true;
+                    }
+                    // Check for scrollable-list class
+                    if (current.classList && current.classList.contains('scrollable-list')) {
+                      return true;
+                    }
+                    // Check for radix scroll area viewport
+                    if (current.hasAttribute('data-radix-scroll-area-viewport')) {
+                      return true;
+                    }
+                    // Check if element has overflow-y: auto/scroll and is actually scrollable
+                    var style = window.getComputedStyle(current);
+                    var overflowY = style.overflowY;
+                    if ((overflowY === 'auto' || overflowY === 'scroll') && 
+                        current.scrollHeight > current.clientHeight) {
+                      return true;
+                    }
+                    current = current.parentElement;
+                  }
+                  return false;
+                }
+
                 document.addEventListener('touchstart', function(e) {
                   touchStartY = e.touches[0].clientY;
+                  touchStartTarget = e.target;
                 }, { passive: true });
 
                 document.addEventListener('touchmove', function(e) {
+                  // If touch started inside a scrollable element, let it handle scroll
+                  if (touchStartTarget && isInsideScrollableElement(touchStartTarget)) {
+                    return; // Allow scroll - don't prevent default
+                  }
+
                   var root = getScrollRoot();
                   if (!root) return;
 
                   var touchY = e.touches[0].clientY;
                   var diff = touchY - touchStartY;
 
-                  // If pulling down AND already at top of scroll, prevent default
+                  // Only block pull-to-refresh: pulling down while at the very top
                   if (diff > 0 && root.scrollTop <= 0) {
                     e.preventDefault();
                   }
                 }, { passive: false });
-
-                // Also block overscroll on the scroll root itself
-                document.addEventListener('DOMContentLoaded', function() {
-                  var root = getScrollRoot();
-                  if (root) {
-                    root.addEventListener('touchmove', function(e) {
-                      if (root.scrollTop <= 0 && e.touches[0].clientY > touchStartY) {
-                        e.preventDefault();
-                      }
-                    }, { passive: false });
-                  }
-                });
               })();
 
               // ── Service Worker ──

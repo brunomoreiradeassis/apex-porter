@@ -76,10 +76,12 @@ function SheetContent({
         {...props}
       >
         <div 
+          data-scroll-area
           className="flex-1 overflow-y-auto overscroll-contain"
           style={{ 
             WebkitOverflowScrolling: 'touch',
             touchAction: 'pan-y',
+            overscrollBehavior: 'contain',
           }}
         >
           {children}
