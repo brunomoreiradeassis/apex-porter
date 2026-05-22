@@ -402,7 +402,7 @@ export default function LembretesPage() {
         setDialogOpen(open);
         if (!open) resetForm();
       }}>
-        <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>{editingId ? 'Editar Lembrete' : 'Novo Lembrete'}</DialogTitle>
           </DialogHeader>

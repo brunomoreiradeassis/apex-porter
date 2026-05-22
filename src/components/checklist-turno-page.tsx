@@ -427,7 +427,7 @@ export default function ChecklistTurnoPage() {
 
       {/* New Checklist Dialog */}
       <Dialog open={newDialogOpen} onOpenChange={v => { if (!v) setNewDialogOpen(false); }}>
-        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto custom-scrollbar">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ClipboardCheck className="h-5 w-5 text-emerald-600" />
@@ -476,7 +476,7 @@ export default function ChecklistTurnoPage() {
 
       {/* Detail / Fill Dialog */}
       <Dialog open={detailOpen} onOpenChange={v => { if (!v) { setDetailOpen(false); setSelected(null); } }}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto custom-scrollbar" onOpenAutoFocus={e => e.preventDefault()}>
+        <DialogContent className="sm:max-w-lg" onOpenAutoFocus={e => e.preventDefault()}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <ClipboardCheck className="h-5 w-5 text-emerald-600" />

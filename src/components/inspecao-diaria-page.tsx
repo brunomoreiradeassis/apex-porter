@@ -425,7 +425,7 @@ export default function InspecaoDiariaPage() {
 
       {/* New Inspection Dialog */}
       <Dialog open={newDialogOpen} onOpenChange={v => { if (!v) setNewDialogOpen(false); }}>
-        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto custom-scrollbar">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Eye className="h-5 w-5 text-emerald-600" />

@@ -404,7 +404,7 @@ export default function CorrespondenciasPage() {
 
       {/* Registration Modal */}
       <Dialog open={modalOpen} onOpenChange={(v) => !v && setModalOpen(false)}>
-        <DialogContent className="max-w-md max-h-[85vh] overflow-y-auto custom-scrollbar">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Mail className="h-5 w-5 text-emerald-600" />

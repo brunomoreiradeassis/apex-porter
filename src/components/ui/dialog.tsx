@@ -60,7 +60,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed inset-0 z-50 grid w-full h-full max-w-none translate-x-0 translate-y-0 gap-0 rounded-none border-0 shadow-none duration-200 sm:top-[50%] sm:left-[50%] sm:max-w-[calc(100%-2rem)] sm:h-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:gap-4 sm:rounded-xl sm:border sm:px-6 sm:py-5 sm:shadow-lg",
+          "bg-background fixed inset-0 z-50 flex flex-col w-full h-full max-w-none m-0 p-0 gap-0 rounded-none border-0 shadow-none sm:top-[50%] sm:left-[50%] sm:max-w-[calc(100%-2rem)] sm:h-auto sm:translate-x-[-50%] sm:translate-y-[-50%] sm:gap-4 sm:rounded-xl sm:border sm:px-6 sm:py-5 sm:shadow-lg sm:flex sm:flex-col sm:m-auto data-[state=open]:animate-none data-[state=closed]:animate-none",
           className
         )}
         style={{ 
@@ -70,7 +70,7 @@ function DialogContent({
       >
         <div 
           data-scroll-area
-          className="h-full w-full overflow-y-auto overscroll-contain px-4 py-6 sm:px-1 sm:py-0 sm:max-h-[calc(85vh-4rem)]"
+          className="flex-1 w-full h-full overflow-y-auto overscroll-contain px-4 py-6 sm:px-1 sm:py-0 sm:max-h-[calc(85vh-4rem)] sm:h-auto"
           style={{ 
             WebkitOverflowScrolling: 'touch',
           }}
